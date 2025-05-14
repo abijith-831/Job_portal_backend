@@ -1,23 +1,23 @@
-// backend/index.js
+
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
-require('dotenv').config();  // Load environment variables from .env file
+require('dotenv').config(); 
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "job-portal-frontend-five-weld.vercel.app",
 }));
 app.use(express.json());
 
 const pool = new Pool({
-  user: process.env.DB_USER,         // Fetch from .env
-  host: process.env.DB_HOST,         // Fetch from .env
-  database: process.env.DB_DATABASE, // Fetch from .env
-  password: process.env.DB_PASSWORD, // Fetch from .env
-  port: process.env.DB_PORT,         // Fetch from .env
+  user: process.env.DB_USER,      
+  host: process.env.DB_HOST,       
+  database: process.env.DB_DATABASE, 
+  password: process.env.DB_PASSWORD, 
+  port: process.env.DB_PORT,       
 });
 
 app.post('/api/submit-jobs', async (req, res) => {

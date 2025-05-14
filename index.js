@@ -1,26 +1,29 @@
 
+
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
-require('dotenv').config(); 
+require('dotenv').config();
 
 const app = express();
 const PORT = 5000;
 
 app.use(cors({
-  origin: "job-portal-frontend-five-weld.vercel.app",
+  origin: '*', 
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 app.use(express.json());
 
 const pool = new Pool({
-  user: process.env.DB_USER,      
-  host: process.env.DB_HOST,       
-  database: process.env.DB_DATABASE, 
-  password: process.env.DB_PASSWORD, 
-  port: process.env.DB_PORT,       
+  connectionString: process.env.DB_URL,
+  ssl: {
+    rejectUnauthorized: false, 
+  },
 });
 
 app.post('/api/submit-jobs', async (req, res) => {
+  console.log('sbubmit');
   const {
     job_title,
     company_name,
@@ -52,6 +55,7 @@ app.post('/api/submit-jobs', async (req, res) => {
 });
 
 app.get('/api/get-jobs', async (req, res) => {
+  console.log('connf get');
   const { title, location, jobType, salary } = req.query;
 
   const allEmpty =

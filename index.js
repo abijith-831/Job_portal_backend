@@ -22,6 +22,30 @@ const pool = new Pool({
   },
 });
 
+app.get('/create-jobs-table', async (req, res) => {
+  try {
+    await pool.query(`
+      CREATE TABLE jobs (
+        id SERIAL PRIMARY KEY,
+        job_title VARCHAR(255) NOT NULL,
+        company_name VARCHAR(255) NOT NULL,
+        location VARCHAR(255),
+        job_type VARCHAR(100),
+        salary_min INTEGER,
+        salary_max INTEGER,
+        deadline DATE,
+        description TEXT,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    res.send('Jobs table created successfully.');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error creating table.');
+  }
+});
+
+
 app.post('/api/submit-jobs', async (req, res) => {
   console.log('sbubmit');
   const {
